@@ -1,4 +1,6 @@
-## 物理机、虚拟机、容器的关系
+[TOC]
+
+## 1 物理机、虚拟机、容器的关系
 
 容器提供操作系统级别的进程隔离，而虚拟机提供硬件虚拟化的隔离。
 
@@ -16,7 +18,7 @@
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220730110706.png)
 
-## Docker 核心概念
+## 2 Docker 核心概念
 
 
 
@@ -38,7 +40,7 @@
 
 
 
-## Docker 架构
+## 3 Docker 架构
 
 **Docker 客户端**：用户与 Docker 服务端交互的方式，包括 docker 命令，REST API，各种语言的 SDK。
 
@@ -52,27 +54,27 @@
 
 
 
-## Kubernetes 和 Docker 的关系
+## 4 Kubernetes 和 Docker 的关系
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220730100925.png)
 
-## Docker 安装
+## 5 Docker 安装
 
 参见 [Install Docker Engine](https://docs.docker.com/engine/install/)
 
-## Docker 命令
+## 6 Docker 命令
 
 参见 [Command-line reference](https://docs.docker.com/reference/)
 
-### 容器命令
+### 6.1 容器命令
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220730103213.png)
 
 **创建并启动容器**
 
-- `-d` 是`--detach`的简写，它的作用是**在后台运行容器，并且打印容器 id**
-- `-t`是`--tty`的简写，它的作用是**分配一个伪 TTY**
-- `-i`是`--interactive`的简写，它的作用是**即使没有 attached，也要保持 STDIN 打开状态**
+- `-d` 是`--detach`的简写，它的作用是在后台运行容器，并且打印容器 id。
+- `-t`是`--tty`的简写，它的作用是分配一个伪 TTY。
+- `-i`是`--interactive`的简写，它的作用是即使没有 attached，也要保持 STDIN 打开状态。
 
 在交互模式下，`-i`与`-t`选项必须结合使用，也就是`-it`。
 
@@ -136,7 +138,7 @@ docker run --rm -it --name test busybox:1.28
 
 
 
-### 镜像命令
+### 6.2 镜像命令
 
 
 
@@ -213,13 +215,13 @@ CMD ["./hello"]
 
 
 
-## 容器网络
+## 7 容器网络
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220730111211.png)
 
-### 容器网络模式
+### 7.1 容器网络模式
 
-#### Bridge 网络模式
+#### 7.1.1 Bridge 网络模式
 
 默认情况下，新创建的容器在不指定网络的情况下会采用 bridge 模式，并自动桥到 docker0 网桥。容器出访时，会 SNAT 成宿主机的 IP 地址。
 
@@ -241,7 +243,7 @@ docker0         8000.0242c7fd143b       no              vethbf7ce62
 
 
 
-#### Host 网络模式
+#### 7.1.2 Host 网络模式
 
 host 网络模式需要在创建容器时通过参数 `--net host` 或者 `--network host` 指定。采用 host 网络模式的 容器，可以直接使用宿主机的 IP 地址与外界进行通信，同时容器内服务的端口也可以使用宿主机的端口，无需额外进行 NAT 转换。
 
@@ -258,7 +260,7 @@ ip addr
 
 
 
-#### None 网络模式
+#### 7.1.3 None 网络模式
 
 none 网络模式是指禁用网络功能，只保留 localhost 本地环回接口。在创建容器时通过参数 `--net none` 或者 `--network none` 指定。
 
@@ -275,7 +277,7 @@ ip addr
 
 
 
-#### Container 网络模式
+#### 7.1.4 Container 网络模式
 
 - Container 网络模式是 Docker 中一种较为特别的网络的模式。在创建容器时通过参数 `--net container:已运行的容器名称|ID` 或者 `--network container:已运行的容器名称|ID` 指定；
 - 处于这个模式下的 Docker 容器会共享一个网络栈，这样两个容器之间可以使用 localhost 高效快速通信。
@@ -296,11 +298,11 @@ docker exec -it myapp ip addr
 
 
 
-### 容器间通过名称访问
+### 8 容器间通过名称访问
 
-#### Docker link（废弃）
+#### 8.1 Docker link（废弃）
 
-Docker link 是一个遗留的特性，在新版本的 Docker 中，一般不推荐使用。简单来说 Docker link 就是把两个容器连接起来，容器可以使用容器名进行通信，而不需要依赖 ip 地址（**其实就是在容器的 /etc/hosts 文件添加了 host 记录**，原本容器之间的 IP 就是通的，只是我们增加了 host 记录）
+Docker link 是一个遗留的特性，在新版本的 Docker 中，一般不推荐使用。简单来说 Docker link 就是把两个容器连接起来，容器可以使用容器名进行通信，而不需要依赖 IP 地址（**其实就是在容器的 /etc/hosts 文件添加了 host 记录**，原本容器之间的 IP 就是通的，只是我们增加了 host 记录）
 
 
 
@@ -344,7 +346,7 @@ PING centos-1-alias (172.18.0.2) 56(84) bytes of data.
 64 bytes from centos-1-alias (172.18.0.2): icmp_seq=2 ttl=64 time=3.75 ms
 ```
 
-#### Embedded DNS 
+#### 8.2 Embedded DNS 
 
 从 Docker 1.10 开始，Docker 提供了一个内置的 DNS 服务器,当创建的容器属于自定义网络时，容器的 /etc/resolv.conf 会使用内置的 DNS 服务器（地址永远是 127.0.0.11）来解析相同自定义网络内的其他容器。
 
@@ -398,7 +400,7 @@ PING centos-4 (172.19.0.3) 56(84) bytes of data.
 
 
 
-#### 容器端口映射
+### 9 容器端口映射
 
 默认情况下，外部无法直接访问到容器。假如一个容器想对外提供服务的话，需要进行端口映射。端口映射将容器的某个端口映射到 Docker 主机端口上。那么任何发送到该端口的流量，都会被转发到容器中。
 
@@ -414,7 +416,7 @@ PING centos-4 (172.19.0.3) 56(84) bytes of data.
 docker run -d --name web -p 5000:80 nginx
 ```
 
-## 容器存储
+## 10 容器存储
 
 - **bind mounts**：是将宿主机的文件或目录挂载到容器中，**注意宿主机的路径要写绝对路径**。
 - **volumes** 的数据存放在 /var/lib/docker 目录中，而 **volumes** 完全由 Docker 管理。
@@ -424,7 +426,7 @@ docker run -d --name web -p 5000:80 nginx
 
 
 
-### Bind Mounts
+### 10.1 Bind Mounts
 
 将宿主机当前的目录挂载到容器的 /app目录。
 **方式一：-v**
@@ -446,7 +448,7 @@ docker run -d \
   nginx:latest
 ```
 
-### Volumes
+### 10.2 Volumes
 
 **先创建一个 volume**
 
@@ -474,7 +476,7 @@ docker run -d \
 
 
 
-### Tmpfs
+### 10.3 Tmpfs
 
 **方式一：--tmpfs**  
 
@@ -495,7 +497,7 @@ docker run -d \
   --mount type=tmpfs,destination=/app \
   nginx:latest
 ```
-## Docker Compose 容器编排
+## 11 Docker Compose 容器编排
 
 Compose 是一个用于定义和运行多容器的工具。
 
@@ -516,9 +518,7 @@ services:
     image: "redis:alpine"
 ```
 
-
-
-## 参考资料
+## 12 参考资料
 
 - [拉勾-由浅入深吃透 Docker](https://kaiwu.lagou.com/course/courseInfo.htm?courseId=455#/detail/pc?id=4572)
 - [Containerd深度剖析-runtime篇](https://www.modb.pro/db/413691)
