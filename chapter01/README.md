@@ -195,7 +195,7 @@ docker tag busybox:1.28 mybusybox:1.28
 
 ```bash
 # 先创建一个容器
-docker run --rm --name=busybox -it busybox sh
+docker run -itd --name=busybox -it busybox sh
 # 进入容器
 docker exec -it busybox sh
 # 往容器中写入一个文件
@@ -332,12 +332,12 @@ Docker link 是一个遗留的特性，在新版本的 Docker 中，一般不推
 创建容器 centos-1：
 
 ```sh
-[root@host1 ~]# docker run -itd --name centos-1  registry.cn-shanghai.aliyuncs.com/public-namespace/cr7-centos7-tool:v2
+[root@host1 ~]# docker run -itd --name centos-1 centos
 ```
 创建容器 centos-2，使用 --link name:alias，name 就是要访问的目标机器，alias 就是自定义的别名。
 
 ```sh
-[root@host1 ~]# docker run -itd --name centos-2  --link centos-1:centos-1-alias  registry.cn-shanghai.aliyuncs.com/public-namespace/cr7-centos7-tool:v2
+[root@host1 ~]# docker run -itd --name centos-2  --link centos-1:centos-1-alias centos
 ```
 查看容器 centos-2 的 /etc/hosts 文件：
 ```sh
@@ -392,8 +392,8 @@ a23c8b371c7f        my-network          bridge              local
 分别创建两个容器属于自定义网络 my-network 中：
 
 ```sh
-[root@host1 ~]# docker run -itd --name centos-3 --net my-network  registry.cn-shanghai.aliyuncs.com/public-namespace/cr7-centos7-tool:v2 
-[root@host1 ~]# docker run -itd --name centos-4 --net my-network  registry.cn-shanghai.aliyuncs.com/public-namespace/cr7-centos7-tool:v2  
+[root@host1 ~]# docker run -itd --name centos-3 --net my-network  centos
+[root@host1 ~]# docker run -itd --name centos-4 --net my-network  centos
 ```
 
 查看容器 centos-4 的 /etc/resolv.conf，可以看到 nameserver 添加的 IP 为 127.0.0.11 的 Embedded DNS：
