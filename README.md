@@ -1,4 +1,5 @@
 # kubernetes-tutorial
-Kubernetes 系列教程
-- chapter01: [Docker 介绍](chapter01)
-- chapter02: [Docker 原理](chapter02)
+Kubernetes Tutorial
+- chapter01: [Docker Fundamental](chapter01)
+- chapter02: [Deep dive in Docker](chapter02)
+- chapter03: [Kubernetes Overview](chapter03)

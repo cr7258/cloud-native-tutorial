@@ -46,7 +46,7 @@
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021173458.png)
 
-![image-20221021173653328](/Users/I576375/Library/Application Support/typora-user-images/image-20221021173653328.png)
+![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021191730.png)
 
 
 
