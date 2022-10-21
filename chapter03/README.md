@@ -75,8 +75,8 @@
 
 ## Deploy Kubernetes
 
-- **[Deploy Kubernetes Using Kubeadm in Ubuntu Stey by Stey](https://github.com/cr7258/golang-learning/tree/master/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E4%BA%91%E5%8E%9F%E7%94%9F%E8%AE%AD%E7%BB%83%E8%90%A5/homework/module4)**
-- [Managed Kubernetes service in cloud vendors(AWS, GCP, Azure, DigitalOcean)](https://cloud.digitalocean.com/)-
+- [Deploy Kubernetes Using Kubeadm in Ubuntu Stey by Stey](https://github.com/cr7258/golang-learning/tree/master/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E4%BA%91%E5%8E%9F%E7%94%9F%E8%AE%AD%E7%BB%83%E8%90%A5/homework/module4)
+- [Managed Kubernetes service in cloud vendors(AWS, GCP, Azure, DigitalOcean)](https://cloud.digitalocean.com/)
 - Run Kubernetes in your local machine quickly
   - [Minikube](https://minikube.sigs.k8s.io/docs/)
   - [Kind](https://kind.sigs.k8s.io/)
