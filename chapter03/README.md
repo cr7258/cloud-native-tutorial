@@ -1,22 +1,17 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
 - [What is Kubernetes?](#what-is-kubernetes)
 - [Kubernetes Achitecture](#kubernetes-achitecture)
 - [Main Kubernetes Componentes](#main-kubernetes-componentes)
   - [Node & Pod](#node--pod)
-- [Service & Ingress](#service--ingress)
-- [Configmap & Secret](#configmap--secret)
-- [Volume](#volume)
-- [Deployment & StatefulSet](#deployment--statefulset)
+  - [Service & Ingress](#service--ingress)
+  - [Configmap & Secret](#configmap--secret)
+  - [Volume](#volume)
+  - [Deployment & StatefulSet](#deployment--statefulset)
 - [Kubernetes Configuration](#kubernetes-configuration)
 - [Kubectl](#kubectl)
 - [Deploy Kubernetes](#deploy-kubernetes)
 - [Demo](#demo)
 - [Reference](#reference)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## What is Kubernetes?
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221020211252.png)
@@ -36,13 +31,14 @@
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221020220030.png)
 
-## Service & Ingress
+### Service & Ingress
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021172848.png)
 
+![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021175300.png)
 
 
-## Configmap & Secret
+### Configmap & Secret
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021173458.png)
 
@@ -50,13 +46,12 @@
 
 
 
-## Volume
+### Volume
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021174037.png)
 
-![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021175300.png)
 
-## Deployment & StatefulSet
+### Deployment & StatefulSet
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021174737.png)
 
