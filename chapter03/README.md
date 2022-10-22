@@ -5,7 +5,7 @@
   - [Service & Ingress](#service--ingress)
   - [Configmap & Secret](#configmap--secret)
   - [Volume](#volume)
-  - [Deployment & StatefulSet](#deployment--statefulset)
+  - [Deployment & StatefulSet & DaemonSet](#deployment--statefulset--daemonset)
 - [Kubernetes Configuration](#kubernetes-configuration)
 - [Kubectl](#kubectl)
 - [Deploy Kubernetes](#deploy-kubernetes)
@@ -51,7 +51,7 @@
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021174037.png)
 
 
-### Deployment & StatefulSet
+### Deployment & StatefulSet & DaemonSet
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021174737.png)
 
@@ -59,7 +59,7 @@
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221021175014.png)
 
-
+![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20221022214425.png)
 
 ## Kubernetes Configuration
 
