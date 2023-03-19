@@ -1,3 +1,55 @@
+- [Pod](#pod)
+- [Pods and controllers](#pods-and-controllers)
+- [Pod Phase](#pod-phase)
+- [Pod conditions](#pod-conditions)
+- [Container states](#container-states)
+  - [Waiting](#waiting)
+  - [Running](#running)
+  - [Terminated](#terminated)
+- [Container probes](#container-probes)
+  - [Readiness Probes](#readiness-probes)
+  - [Liveness Probes](#liveness-probes)
+  - [Startup Probes](#startup-probes)
+- [Init Containers](#init-containers)
+- [Ephemeral Containers](#ephemeral-containers)
+- [Pod Quality of Service Classes（QoS）](#pod-quality-of-service-classesqos)
+  - [Guaranteed](#guaranteed)
+  - [Burstable](#burstable)
+  - [BestEffort](#besteffort)
+
+## Pod 
+
+![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20230319171527.png)
+
+Pods are the smallest deployable units of computing that you can create and manage in Kubernetes.
+
+![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20230319171618.png)
+
+The shared context of a Pod is a set of **Linux namespaces, cgroups**, and potentially other facets of isolation - the same things that isolate a container. A Pod is similar to a set of containers with shared namespaces and shared filesystem volumes.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+```
+
+
+## Pods and controllers
+
+You can use workload resources to create and manage multiple Pods for you. A controller for the resource handles replication and rollout and automatic healing in case of Pod failure. 
+
+Here are some examples of workload resources that manage one or more Pods:
+- [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+- [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
+- [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)
+
 
 ## Pod Phase
 

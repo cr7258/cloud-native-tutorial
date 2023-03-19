@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: httpserver
+  name: httpserver
+spec:
+  # Deployment 部署失败的超时时间
+  # 可以编写控制器观察当 Reason=ProgressDeadlineExceeded 时采取相应的操作，例如回滚到以前的版本
+  progressDeadlineSeconds: 600 
+  replicas: 3 # 副本数
+  revisionHistoryLimit: 10 # 保留的 Replicaset 版本数
+  selector: # 选择器
+    matchLabels:
+       app: httpserver
+  strategy:  # 默认采用 rollingUpdate 滚动升级策略，还可以使用 Recreate 策略，在创建新 Pod 之前，先将现有的所有 Pod 删除
+    rollingUpdate:
+      maxSurge: 25% # 最大峰值，可以超出期望 Pod 个数的 Pod 数量
+      maxUnavailable: 25% # 最大不可用，更新过程中不可用的 Pod 数量上限
+    type: RollingUpdate
+  template:  # Pod 模板
+    metadata:
+      labels:
+         app: httpserver
+    spec:
+       # Init 容器是按顺序启动的，每个 Init 容器成功退出后才会启动下一个 Init 容器
+       # Init 容器运行完毕后，才会启动业务容器
+       # 如果 Pod 重启，所有 Init 容器必须重新执行。
+       initContainers: 
+         - name: init-httpserver-1
+           image: busybox:1.28
+           command: ['sh', '-c', 'echo init-httpserver-1 start! >> /tmp/code.log']
+           volumeMounts: 
+             - name: share-volume
+               mountPath: /tmp
+         - name: init-httpserver-2
+           image: busybox:1.28
+           command: ['sh', '-c', 'echo init-httpserver-2 start! >> /tmp/code.log']
+           volumeMounts: 
+             - name: share-volume
+               mountPath: /tmp
+       # 多个容器启动是没有顺序的    
+       containers:
+          - name: httpserver # 容器名
+            image: cr7258/http-server:v2 # 镜像名
+            imagePullPolicy: IfNotPresent # 镜像拉取策略，当指定了非 latest 的标签，imagePullPolicy 默认是 IfNotPresent，否则 的标签，imagePullPolicy 默认是 Always
+            livenessProbe: # 存活探针
+              failureThreshold: 3 # 当探测失败时，重启容器的次数，默认值是 3，最小值是 1
+              initialDelaySeconds: 5 # 容器启动后要等待多少秒后才启动存活和就绪探测器， 默认是 0 秒，最小值是 0
+              periodSeconds: 10 # 执行探测的时间间隔（单位是秒），默认是 10 秒，最小值是 1
+              successThreshold: 1 # 探测器在失败后，被视为成功的最小连续成功数。默认值是 1，存活和启动探测的这个值必须是 1，最小值是 1
+              timeoutSeconds: 1 # 探测的超时后等待多少秒，默认值是 1 秒，最小值是 1
+              httpGet: # 通过 HTTP 请求探测
+                path: /healthz
+                port: 8080
+                scheme: HTTP
+            readinessProbe: # 就绪探针
+              failureThreshold: 3 
+              initialDelaySeconds: 5 
+              periodSeconds: 10
+              successThreshold: 1
+              timeoutSeconds: 1
+              httpGet:
+                path: /healthz
+                port: 8080
+                scheme: HTTP
+            # 启动探针，如果提供了启动探针，则禁用所有其他探针，直到它成功为止。
+            # readinessProbe 和 livenessProbe 会在 Pod 的整个生命周期中运行，startupProbe 只会在 Pod 启动阶段运行
+            # readinessProbe 用于让 Service 知道何时可以将流量发往该 Pod，livenessProbe 用于重启不健康的容器
+            # 应当将启动探针的 failureThreshold 和 periodSeconds 设置为较大的值，考虑启动时等待最久的情况
+            startupProbe: 
+              httpGet:
+                path: /healthz
+                port: 8080
+                scheme: HTTP
+              # 应用程序最多有 30 * 10 = 300s 时间完成启动过程
+              failureThreshold: 30
+              periodSeconds: 10
+            resources: # 资源限制，limit 和 request 相等是 guaranteed 模式，优先保障
+              limits:  
+                cpu: 200m
+                memory: 100Mi # 1Mi=1024x1024，1M=1000x1000，其它单位类推，例如 Ki/K Gi/G
+              requests:
+                cpu: 200m
+                memory: 100Mi
+            lifecycle:
+               # postStart 操作执行完成之前，kubelet 会锁住容器，不让应用程序的进程启动，
+               # 只有在 postStart 操作完成之后容器的状态才会被设置成为 RUNNING。
+               postStart:
+                 exec:
+                   command: ["sh", "-c", "echo Hello from the postStart handler >> /tmp/code.log"]
+              # 容器停止前执行的命令
+               preStop:
+                 exec:
+                   command: ["sh", "-c", "echo Bye from the preStop handler >> /tmp/code.log && sleep 60s"]
+            volumeMounts: # 在 Pod 中挂载的卷
+              - name: podinfo # 将 downwardAPI 卷挂载到 /etc/podinfo 目录中
+                mountPath: /etc/podinfo
+              - name: config-volume
+                mountPath: /etc/config-volume # 在 /etc/config-volume/game.properties 文件中会看到 Configmap game.properties 键的内容
+              - name: share-volume
+                mountPath: /tmp
+            env: # 设置 Pod 环境变量
+              - name: PLAYER_INITIAL_LIVES
+                valueFrom:
+                  configMapKeyRef:
+                     name: game-demo
+                     key: player_initial_lives  # 需要取值的键
+              - name: UI_PROPERTIES_FILE_NAME
+                valueFrom:
+                  configMapKeyRef:
+                     name: game-demo
+                     key: ui_properties_file_name  # 需要取值的键
+       terminationGracePeriodSeconds: 60 # 等待容器进程完全停止，如果在 terminationGracePeriodSeconds 内 (默认 30s) 还未完全停止，就发送 SIGKILL 信号强制杀死进程。
+       volumes:
+        - name: podinfo
+          downwardAPI: # 通过 downwardAPI 获取 Pod 元数据
+            items:
+             - path: "labels"
+               fieldRef:
+                 fieldPath: metadata.labels
+        - name: config  # 获取 ConfigMap 中的数据
+          configMap:
+             name: game-demo
+        - name: config-volume
+          configMap:
+             name: game-demo
+             items:
+              - key: game.properties
+                path: game.properties
+        - name: share-volume  # Init 容器和业务容器共享的卷
+          emptyDir: {}
