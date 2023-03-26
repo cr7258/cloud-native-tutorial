@@ -183,7 +183,7 @@ spec:
         port: 8080
       initialDelaySeconds: 30
       periodSeconds: 30
-      timeoutSeconds: 1
+      timeoutSeconds: 5
       successThreshold: 1
       failureThreshold: 10
 ```
