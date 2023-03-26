@@ -197,14 +197,14 @@ This example defines a pod with a single container running a web application. Th
 
 ### Readiness Probes
 
-Readiness probes are used to let kubelet know when the application is ready to accept new traffic. A primary use case for readiness probes is directing traffic to deployments behind a service.
+**Readiness probes are used to let kube-proxy know when the application is ready to accept new traffic.** A primary use case for readiness probes is directing traffic to deployments behind a service.
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/0_AvaYbgMkeHJ0Pis8.gif)
 
 
 ### Liveness Probes
 
-Liveness probes are used to restart unhealthy containers. The kubelet periodically pings the liveness probe, determines the health, and kills the pod if it fails the liveness check.
+**Liveness probes are used to restart unhealthy containers.** The kubelet periodically pings the liveness probe, determines the health, and kills the pod if it fails the liveness check.
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/0_yicsIyLNZJlDlIsf.gif)
 
