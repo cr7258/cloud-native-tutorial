@@ -181,11 +181,11 @@ spec:
       httpGet:
         path: /health
         port: 8080
-      initialDelaySeconds: 10
-      periodSeconds: 5
+      initialDelaySeconds: 30
+      periodSeconds: 30
       timeoutSeconds: 1
       successThreshold: 1
-      failureThreshold: 30
+      failureThreshold: 10
 ```
 
 This example defines a pod with a single container running a web application. The container exposes port 8080 and uses the /health endpoint for all three probes.
