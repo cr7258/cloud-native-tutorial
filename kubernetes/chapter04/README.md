@@ -181,11 +181,11 @@ spec:
       httpGet:
         path: /health
         port: 8080
-      initialDelaySeconds: 10
-      periodSeconds: 5
-      timeoutSeconds: 1
+      initialDelaySeconds: 30
+      periodSeconds: 30
+      timeoutSeconds: 5
       successThreshold: 1
-      failureThreshold: 30
+      failureThreshold: 10
 ```
 
 This example defines a pod with a single container running a web application. The container exposes port 8080 and uses the /health endpoint for all three probes.
@@ -197,14 +197,14 @@ This example defines a pod with a single container running a web application. Th
 
 ### Readiness Probes
 
-Readiness probes are used to let kubelet know when the application is ready to accept new traffic. A primary use case for readiness probes is directing traffic to deployments behind a service.
+**Readiness probes are used to let kube-proxy know when the application is ready to accept new traffic.** A primary use case for readiness probes is directing traffic to deployments behind a service.
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/0_AvaYbgMkeHJ0Pis8.gif)
 
 
 ### Liveness Probes
 
-Liveness probes are used to restart unhealthy containers. The kubelet periodically pings the liveness probe, determines the health, and kills the pod if it fails the liveness check.
+**Liveness probes are used to restart unhealthy containers.** The kubelet periodically pings the liveness probe, determines the health, and kills the pod if it fails the liveness check.
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/0_yicsIyLNZJlDlIsf.gif)
 
